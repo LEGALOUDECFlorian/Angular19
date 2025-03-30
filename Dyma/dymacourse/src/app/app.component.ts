@@ -13,6 +13,11 @@ import { Dyma71Component } from './components/chapter-7/dyma7-1.component';
 import { Dyma72Component } from './components/chapter-7/dyma7-2.component';
 import { Dyma73Component } from './components/chapter-7/dyma7-3.component';
 import { Dyma74Component } from './components/chapter-7/dyma7-4/dyma7-4.component';
+import { Dyma91Component } from './components/chapter-9/chapter9-1/dyma9-1.component';
+import { Dyma92Component } from './components/chapter-9/chapter9-2/dyma9-2.component';
+import { Dyma93Component } from './components/chapter-9/chapter9-3/dyma9-3.component';
+import { Dyma94Component } from './components/chapter-9/chapter9-4/dyma9-4.component';
+import { Dyma95Component } from './components/chapter-9/chapter-9-5/dyma9-5.component';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +27,12 @@ import { Dyma74Component } from './components/chapter-7/dyma7-4/dyma7-4.componen
   // imports: [ParentComponent]  // chapter-4
   // imports: [Dyma61Component, Dyma62Component, Dyma63Component, Dyma64Component] // chapter-6
   // imports: [Dyma71Component, Dyma72Component, Dyma73Component] // chapter-7-(1_3)
-  imports: [Dyma74Component] // chapter-7-4
+  // imports: [Dyma74Component] // chapter-7-4
+  // imports: [Dyma91Component] // chapter-9_1
+  // imports: [Dyma92Component] // chapter-9_2
+  // imports: [Dyma93Component] // chapter-9_3
+  // imports: [Dyma94Component] // chapter-9_4
+  imports: [Dyma95Component] // chapter-9_5
 })
 export class AppComponent {
   title = 'dymacourse';
