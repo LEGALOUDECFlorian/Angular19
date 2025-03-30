@@ -10,6 +10,10 @@ body {
   border: var(--border);
 }
 
+.radius {
+  border-radius: var(--radius);
+}
+
 .active-item {
   background-color: var(--light);
   color: white;
@@ -38,10 +42,8 @@ body {
   background-color: var(--dark);
 }
 
-.btn-danger {
-
-}
-
-.btn-success {
-
+input {
+  border: var(--border);
+  border-radius: 6px;
+  padding: 12px;
 }
