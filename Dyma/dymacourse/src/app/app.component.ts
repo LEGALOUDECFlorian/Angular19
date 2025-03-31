@@ -22,6 +22,8 @@ import { Dyma112Component } from './components/chapter-11-injectables/chapter-11
 import { Dyma113Component } from './components/chapter-11-injectables/chapter-11_3/dyma-11-3.component';
 import { Dyma121Component } from './components/chapter-12-directives/chapter-12_1_4/dyma-12-1.component';
 import { Dyma125Component } from './components/chapter-12-directives/chapter-12_5/dyma-12-5.component';
+import { Dyma132Component } from './components/chapter-13-pipes/chapter-13-2/dyma-13-1.component';
+import { Dyma141Component } from './components/chapter-14-http/dyma-14-1.component';
 
 @Component({
   selector: 'app-root',
@@ -40,7 +42,9 @@ import { Dyma125Component } from './components/chapter-12-directives/chapter-12_
   // imports: [Dyma112Component] // chapter-11_2
   // imports: [Dyma113Component] // chapter-11_3
   // imports: [Dyma121Component] // chapter-12_1
-  imports: [Dyma125Component] // chapter-12_5
+  // imports: [Dyma125Component] // chapter-12_5
+  // imports: [Dyma132Component] // chapter-13_2
+   imports: [Dyma141Component] // chapter-14_1
 })
 export class AppComponent {
   title = 'dymacourse';
