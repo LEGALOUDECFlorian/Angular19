@@ -14,19 +14,20 @@ import { Todo } from '../shared/interfaces';
   <!-- avec let:  -->
      @let t = todo();
      <li class="flex gap-12 px-12 border">
-        <p class="flex-auto">{{ t.name }}</p>
-        <input type="checkbox" [checked]="t.done"/>
+        <p (click)="selectTodo.emit(todo()._id)" class="flex-auto">{{ t.name }}</p>
+        <input 
+          (click)="toggleTodo.emit(todo()._id)" 
+          type="checkbox" 
+          [checked]="t.done"/>
       </li>
   `,
-  host: {
-    '(click)': 'toggleTodo.emit(todo().id)',
-  },
   styles: ``
 })
 export class TodoComponent {
   
    todo = input.required<Todo>();
    toggleTodo = output<string>();
+   selectTodo = output<string>();
 
  
 }

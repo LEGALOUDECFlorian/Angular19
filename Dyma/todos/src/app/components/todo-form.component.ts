@@ -1,6 +1,6 @@
 import { Component, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Todo } from '../shared/interfaces';
+import { TodoForm } from '../shared/interfaces';
 
 @Component({
   selector: 'app-todo-form',
@@ -18,14 +18,13 @@ import { Todo } from '../shared/interfaces';
 })
 export class TodoFormComponent {
   todoName = "";
-  addTodo = output<Todo>();
+  addTodo = output<TodoForm>();
 
   addTodoInput() {
     if (this.todoName) {
-      const newTodo = {
+      const newTodo: TodoForm = {
         name: this.todoName,
         done: false,
-        id: '' + Math.floor(Math.random() * 1001), // Attention un cast a été produit ici pour la démo.
       };
       this.todoName = "";
       this.addTodo.emit(newTodo);
