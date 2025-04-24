@@ -10,12 +10,18 @@ import { JsonPipe } from '@angular/common';
   imports: [TodoFormComponent, TodosListComponent, JsonPipe],
   template: `
    <app-todo-form (addTodo)="addTodo($event)"/>
-   <app-todos-list 
-     (toggleTodo)="toggleTodo($event)" 
-     (selectTodo)="selectTodo($event)"
-     [todosList]="todosList()"
-   />
-   <!-- <pre>{{ selectTodo() | json }}</pre> -->
+   @if (todoIsLoading()) {
+     <h2>Chargement en cours ...</h2>
+    } @else {
+       <app-todos-list 
+         (updateTodo)="updateTodo($event)" 
+         (selectTodo)="selectTodo($event)"
+         (deleteTodo)="deleteTodo($event)"
+         [todosList]="todosList()"
+       />
+       <pre>{{ selectedTodo() | json }}</pre>
+     }
+   
   `,
   styles: `
     :host {
@@ -27,8 +33,9 @@ export class TodoContainerComponent {
 
   todosService = inject(TodosService);
   todosList = computed(() => this.todosService.todosResource.value() || []);
-  
+  selectedTodo = this.todosService.selectedTodoResource.value;
 
+  todoIsLoading = this.todosService.todosResource.isLoading;
   ///  exemple d'utilisation simple deconseillé\\\
   // async ngOnInit() {
   //   const list = await (await fetch('https://restapi.fr/api/atodos')).json();
@@ -43,7 +50,11 @@ export class TodoContainerComponent {
     this.todosService.selectTodo(todoId);
   }
 
-  toggleTodo(todoId: string) {
-   
+  updateTodo(todo: Todo) {
+    this.todosService.updateTodo(todo);
+  }
+
+  deleteTodo(todoId: string) {
+    this.todosService.deleteTodo(todoId);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable, resource, signal } from '@angular/core';
+import { effect, Injectable, resource, signal } from '@angular/core';
 import { Todo, TodoForm } from '../interfaces';
 
 @Injectable({
@@ -9,14 +9,33 @@ export class TodosService {
   BASE_URL = 'https://restapi.fr/api/atodos';
 
   todosResource = resource({
-    loader: async (): Promise<Todo[]> => ( await fetch(this.BASE_URL)).json()
+    loader: async (): Promise<Todo[]> =>
+      (await fetch(`${this.BASE_URL}?delay=3`)).json()
   })
 
   selectedTodoId = signal<string | null>(null);
+  selectedTodoResource = resource({
+    request: () => ({ id: this.selectedTodoId() }),
+    loader: async ({ request: { id }, abortSignal }): Promise<Todo | undefined> => {
+      if (id) {
+        return (await fetch(`${this.BASE_URL}/${id}`, { signal: abortSignal })).json();
+      } else {
+        return;
+      }
+    }
+  })
 
-  // selectedTodoResource = resource({});
 
-  constructor() { }
+  // constructor() {
+  //   effect(() => {
+  //     console.log({
+  //       value: this.selectedTodoResource.value(),
+  //       isLoading: this.todosResource.isLoading(),
+  //       error : this.todosResource.error(),
+  //       status: this.selectedTodoResource.status(),
+  //     })
+  //   })
+  //  }
 
   selectTodo(todoId: string) {
     console.log(this.selectedTodoId());
@@ -26,7 +45,7 @@ export class TodosService {
 
   async addTodo(todo: TodoForm) {
     try {
-     const response = await fetch(this.BASE_URL, {
+      const response = await fetch(this.BASE_URL, {
         method: "POST",
         body: JSON.stringify(todo),
         headers: {
@@ -35,12 +54,60 @@ export class TodosService {
       });
       const body = await response.json();
       if (response.ok) {
-         console.log({body});
+        this.todosResource.update((todos) => todos ? [ ...todos, body] : [body]);
+        console.log({ body });
       } else {
         throw new Error('Oops');
       }
     } catch (error) {
       throw new Error(`Oops : ${error}`);
     }
-  } 
+  }
+
+  async updateTodo(todo: Todo) {
+    try {
+      const { _id, ...restTodo } = todo;
+      const response = await fetch(`${this.BASE_URL}/${_id}`, {
+        method: "PATCH",
+        body: JSON.stringify(restTodo),
+        headers: {
+          'content-type': "application/json"
+        },
+      });
+      const body = await response.json();
+      if (response.ok) {
+        console.log({ body });
+        this.todosResource.update(todos => todos?.map(t => t._id === (body as Todo)._id ? body : t));
+        this.selectedTodoResource.reload();
+      } else {
+        throw new Error('Oops');
+      }
+    } catch (error) {
+      throw new Error(`Oops : ${error}`);
+    }
+  }
+
+  async deleteTodo(todoId: string) {
+    try {
+
+      const response = await fetch(`${this.BASE_URL}/${todoId}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        this.todosResource.update((todos) =>
+          todos?.filter(({ _id }) => _id !== todoId)
+        );
+        if (this.selectedTodoId() === todoId) {
+          this.selectedTodoId.set(null);
+        }
+        this.selectedTodoResource.reload();
+      } else {
+        // const body = await response.json();
+        throw new Error('Oops');
+      }
+    } catch (error) {
+      throw new Error(`Oops : ${error}`);
+    }
+  }
+
 }

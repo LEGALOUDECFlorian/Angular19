@@ -14,9 +14,10 @@ import { Todo } from '../shared/interfaces';
   <!-- avec let:  -->
      @let t = todo();
      <li class="flex gap-12 px-12 border">
-        <p (click)="selectTodo.emit(todo()._id)" class="flex-auto">{{ t.name }}</p>
+        <p (click)="selectTodo.emit(t._id)" class="flex-auto">{{ t.name }}</p>
+        <button (click)="deleteTodo.emit(t._id)">supprimer</button>
         <input 
-          (click)="toggleTodo.emit(todo()._id)" 
+          (click)="toggleTodo()" 
           type="checkbox" 
           [checked]="t.done"/>
       </li>
@@ -26,8 +27,12 @@ import { Todo } from '../shared/interfaces';
 export class TodoComponent {
   
    todo = input.required<Todo>();
-   toggleTodo = output<string>();
+   updateTodo = output<Todo>();
    selectTodo = output<string>();
+   deleteTodo = output<string>();
+   toggleTodo() {
+     this.updateTodo.emit({ ...this.todo(), done: !this.todo().done })
+   }
 
- 
+   
 }

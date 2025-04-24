@@ -15,7 +15,8 @@ import { TodoFilterComponent } from './todo-filter.component';
       @for (todo of filteredTodosList(); track todo._id) {
         <app-todo
           (selectTodo)="selectTodo.emit($event)"
-          (toggleTodo)="toggleTodo.emit($event)"
+          (updateTodo)="updateTodo.emit($event)"
+          (deleteTodo)="deleteTodo.emit($event)"
           [todo]="todo"
         />
       }
@@ -39,6 +40,7 @@ export class TodosListComponent {
       t.name.toLowerCase().includes(this.filter())
     )
   );
-  toggleTodo = output<string>();
+  updateTodo = output<Todo>();
+  deleteTodo = output<string>();
   selectTodo = output<string>();
 }
